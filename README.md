@@ -41,6 +41,7 @@ A collection of answers I gave on Quora, categorised and easier to find
 - [Why are JIT compilers useful?](https://www.quora.com/Why-is-a-just-in-time-compiler-useful-for-executing-Java-programs/answer/Quildreen-Motta)
 - [Why does Python use .pyc files?](https://www.quora.com/Python-is-interpreted-language-so-what-are-pyc-compile-files/answer/Quildreen-Motta)
 - [How do languages with immutable data deal with memory problems?](https://www.quora.com/In-programming-languages-that-deal-mainly-with-immutable-objects-what-is-done-to-prevent-memory-thrashing-caused-by-creating-lots-of-temporaries/answer/Quildreen-Motta)
+- [How do you implement a programming language?](https://www.quora.com/How-does-one-create-a-programming-language/answer/Quildreen-Motta)
 
 
 ## Programming Language Design
