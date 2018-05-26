@@ -103,13 +103,13 @@ const array = [1, 2];
 // criar um objeto que não herda de nenhum outro objeto.
 const c = Object.create(null);
  
-c + 2	 // => Error: Cannot convert object to primitive value
+c + 2	   // => Error: Cannot convert object to primitive value
 array[c] // => Error: Cannot convert object to primitive value
  
 // Definindo valores que não são funções para essas propriedades tem o
 // mesmo efeito
 const d = { valueOf: null, toString: null };
-d + 2	 // => Error: Cannot convert object to primitive value
+d + 2	   // => Error: Cannot convert object to primitive value
 array[d] // => Error: Cannot convert object to primitive value
 ```
 
@@ -117,7 +117,7 @@ Okay, isso foi bastante coisa, né? Eu vou admitir que menti um pouquinho sobre 
 
 ## `@@toPrimitive` ao resgate...?
 
-Em versões anteriores da linguagem, todas essas conversões de objeto para primitivos eram tratadas pela operação interna `ToPrimitive`[3]. Essa operação é chamada com uma "dica" de qual tipo a expressão espera (`string` ou `number`), o que tem um efeito em qual dos métodos a operação vai chamar primeiro: `.valueOf()` ou `.toString()`. Com a adição de Símbolos[4] na linguagme, a especificação agora permite que os usuários definam um comportamento diferente para essa operação interna através do símbolo `@@toPrimitive`.
+Em versões anteriores da linguagem, todas essas conversões de objeto para primitivos eram tratadas pela operação interna `ToPrimitive`[2]. Essa operação é chamada com uma "dica" de qual tipo a expressão espera (`string` ou `number`), o que tem um efeito em qual dos métodos a operação vai chamar primeiro: `.valueOf()` ou `.toString()`. Com a adição de Símbolos[3] na linguagme, a especificação agora permite que os usuários definam um comportamento diferente para essa operação interna através do símbolo `@@toPrimitive`.
 
 Embora isso torne a conversão de tipos mais complexa, ao menos se você retornar um valor que não é um primitivo dessa operação, JavaScript termina o programa com um erro de tipo, ao invés de tentar chamar `.valueOf` ou `.toString`. É uma dor de cabeça a menos.
 
@@ -179,7 +179,7 @@ Para mostrar como isso pode acontecer, vamos a mais um exemplo. O objeto built-i
 var a = [1];
  
   a + 2
-= a.valueOf() + 2		// Object.prototype.valueOf.call(a) = a
+= a.valueOf() + 2		  // Object.prototype.valueOf.call(a) = a
 = a.toString() + 2		// Array.prototype.toString.call(a) = '1'
 = "1" + 2
 = "12"
@@ -209,7 +209,7 @@ Object.setPrototypeOf(a, myArray);
 = "hello2"
 ```
 
-- Enquanto é normal que alguém tentaria evitar esses tipos de Monkey-Patching hoje em dia (costumávamos fazer isso bastante alguns anos atrás, entretanto), códigos maliciosos podem usar isso para explorar vulnerabilidades em código que parece tão inocente quanto `a + 1`. Existe um problema maior aqui com linguagens mainstream sem mecanismos apropriados de segurança (como Object-Capability Security[5]), mas isso é assunto para outra hora.
+- Enquanto é normal que alguém tentaria evitar esses tipos de Monkey-Patching hoje em dia (costumávamos fazer isso bastante alguns anos atrás, entretanto), códigos maliciosos podem usar isso para explorar vulnerabilidades em código que parece tão inocente quanto `a + 1`. Existe um problema maior aqui com linguagens mainstream sem mecanismos apropriados de segurança (como Object-Capability Security[4]), mas isso é assunto para outra hora.
 
 Em suma, *sempre* converta seus valores explícitamente. Não dependa de operadores fazendo isso para você. TypeScript e Flow podem te ajudar a encontrar esses problemas no seu próprio código se você dedicar um pouco de tempo anotando suas funções com tipos.
 
@@ -235,7 +235,7 @@ x--, --x		=> x = ToNumber(x) - 1
 -x		=> -ToNumber(x)
 +x		=> ToNumber(x)
 ~x		=> ToNumber(x)
-!x		=> ToBoolean(x)   (para objetos, sempre true)
+!x		=> ToBoolean(x)   // (para objetos, sempre true)
  
 // Operadores matemáticos
 x ** y, x * y, x / y, x % y, x - y	
@@ -243,8 +243,8 @@ x ** y, x * y, x / y, x % y, x - y
  
 // Operador additivo
 x + y	=> ToPrimitive(x), ToPrimitive(y)
-	    : se um dos primitivos é uma string, `ToString()` é chamado neles
-		  : do contrário, `ToNumber()` é chamado neles
+      : se um dos primitivos é uma string, `ToString()` é chamado neles
+      : do contrário, `ToNumber()` é chamado neles
  
 // É importante notar que quando ToPrimitive é chamado sem
 // uma dica (como é o caso aqui), o valor padrão para a dica
@@ -264,7 +264,7 @@ a instanceof b	=> ToBoolean(b[Symbol.hasInstance](a))
  
 // Testes de existência de propriedade
 a in b	=> ToPrimitive(a, "string")
-		:  Se um símbolo não for retornado, `ToString()` é chamado no valor
+        :  Se um símbolo não for retornado, `ToString()` é chamado no valor
  
 // Operadores de igualdade
 a == b, a != b
@@ -280,7 +280,7 @@ a & b, a | b, a ^ b		=> ToNumber(a), ToNumber(b)
  
 // Operadores lógicos
 a && b, a || b 			=> ToBoolean(a), ToBoolean(b)
-a ? b : c				=> ToBoolean(a)
+a ? b : c				    => ToBoolean(a)
 ```
 
 Além de operadores, a maioria das funções na biblioteca padrão de JavaScript vai converter os argumentos para um tipo específico. Por exemplo, `Number("300")` vai chamar `ToNumber()` em seu argumento, e `"hello".endsWith(["lo"])` vai converter a array para uma string (e assumindo que as funções built-in não tiverem sido modificadas, retornar `true`).
@@ -342,12 +342,10 @@ Object.prototype[Symbol.toPrimitive] = function(hint) {
 
 #### Footnotes
 
+[1] Polimorfismo de Coerção é o nome dado por Cardelli para o que operadores em JavaScript fazem. Para mais detalhes você pode ver [minha resposta do Quora sobre polimorfismo](https://www.quora.com/Object-Oriented-Programming-What-is-a-concise-definition-of-polymorphism/answer/Quildreen-Motta) (em inglês).
 
+[2] ToBoolean, ToNumber, ToString, e ToPrimitive são operações internas definidas na [especificação de JavaScript](https://tc39.github.io/ecma262/#sec-toboolean).
 
-[1] Quildreen Motta's answer to Object-Oriented Programming: What is a concise definition of polymorphism?
+[3] Símbolos são objetos que podem ser usados como nome de propriedade. Esses nomes usam uma comparação de referência, de forma que símbolos podem definir propriedades únicas sem a possibilidade de colisão. [A especificação define vários símbolos comuns](https://tc39.github.io/ecma262/#table-1).
 
-[2] ECMAScript® 2018 Language Specification
-
-[3] ECMAScript® 2018 Language Specification
-
-[4] Towards a Unified Approach to Access Control and Concurrency Control
+[4] Object-Capability Security é um conceito de segurança aonde o sistema define permissões baseando-se nos objetos que podem ser acessados. Dessa forma cada objeto no sistema tem uma lista limitada de objetos que podem acessar (geralmente concedida por objetos com mais permissões). [Minha resposta do Quora](https://www.quora.com/What-are-some-advanced-concepts-in-programming-that-most-average-programmers-have-never-heard-of/answer/Quildreen-Motta) (em inglês) dá uma introdução sobre o conceito, e a tese de doutorado do Mark Miller, [Towards a Unified Approach to Access Control and Concurrency Control](http://www.erights.org/talks/thesis/) faz uma exposição detalhada do conceito.
