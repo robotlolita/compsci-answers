@@ -30,6 +30,7 @@ A collection of answers I gave on Quora, categorised and easier to find
 
 - [What are the advantages of typed languages?](https://www.quora.com/Why-is-static-typing-in-programming-languages-so-important-for-people-that-they-dislike-more-expressive-languages-like-Python-that-dont-have-it/answer/Quildreen-Motta)
 - [What are type refinements (in Flow/TypeScript)? Why are they useful?](https://www.quora.com/Can-you-explain-type-refinements-and-their-significance-in-Flow-TypeScript/answer/Quildreen-Motta)
+- [What is 'weak typing' and 'strong typing'?](https://www.quora.com/Why-is-Java-a-strongly-typed-programming-language/answer/Quildreen-Motta)
 
 ## Safety, Testing, Verification, etc.
 
