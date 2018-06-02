@@ -1,6 +1,10 @@
 # CS Answers
 
-A collection of answers I gave on Quora, categorised and easier to find
+A collection of answers I gave on Quora, categorised and easier to find.
+
+> Eventualmente essas respostas vão ser traduzidas para português e adicionadas à pasta [pt-br](./pt-br).
+> Eu não vou aceitar PRs de tradução porque eu gasto mais tempo revisando a tradução dos outros do que
+> traduzindo :x
 
 ## JavaScript specifics/internals
 
