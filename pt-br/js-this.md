@@ -2,7 +2,7 @@
 
 > Resposta originalmente para a pergunta do Quora ["What does `this.` in JavaScript mean?"](https://www.quora.com/What-does-this-in-JavaScript-mean/answer/Quildreen-Motta)
 
-**Sumário**: `this` é um argumento comum passado na hora que uma função (do tipo método) é invocada. JavaScript reserva a sintaxxe `objeto.método(foo)` para significar `var f = objeto.método; f.call(objeto, foo)`, aonde `Function.prototype.call` é como você passa esse argumento `this` para uma função, já que JavaScript tomou a decisão de deixar esse parâmetro implícito nas chamadas de funções e definições.
+**Sumário**: `this` é um argumento comum passado na hora que uma função (do tipo método) é invocada. JavaScript reserva a sintaxe `objeto.método(foo)` para significar `var f = objeto.método; f.call(objeto, foo)`, aonde `Function.prototype.call` é como você passa esse argumento `this` para uma função, já que JavaScript tomou a decisão de deixar esse parâmetro implícito nas chamadas de funções e definições.
 
 Por conta disso é impossível saber que valor `this` vai ter antes da função ser chamada. Isso acontece em toda linguagem orientada a objetos. O resto desse artigo explica o porquê.
 
@@ -207,7 +207,7 @@ Uma forma de contornar esse problema é criar uma função com um parâmetro rec
 
 ```js
 const operação = objeto.método.bind(objeto);
-operação(a, b, c); // sempre equivalente a "operação.clal(objeto, a, b, c)"
+operação(a, b, c); // sempre equivalente a "operação.call(objeto, a, b, c)"
 ```
 
 Em Python, quando você tem `objeto.método`, a linguagem vai criar uma função com o parâmetro receptor pré-definido automaticamente, e para evitar isso você precisa usar `classe.método`. Como JavaScript não possui classes isso não faria sentido.
@@ -275,4 +275,4 @@ function foo(a, b) {
 
 ### Strict mode
 
-Em versões antigas de JavaScript (e novas sem `strict mode`), invocar uma função sem um argumento receptor no lado esquerdo passa o objeto global como receptor. Em alguns casos isso faz sentiddo, já que variáveis podem ser definidas no objeto global, e `foo(a)` pode ser visto implicitamente como `global.foo(a)`. Mas isso acontecia mesmo para variáveis locais, e causava vários tipos de problemas. Com `strict mode` as invocações de função que não usam a sintaxe especial de chamada de método (`objeto.método(...)`) passam `undefined` como o parâmetro receptor.
+Em versões antigas de JavaScript (e novas sem `strict mode`), invocar uma função sem um argumento receptor no lado esquerdo passa o objeto global como receptor. Em alguns casos isso faz sentido, já que variáveis podem ser definidas no objeto global, e `foo(a)` pode ser visto implicitamente como `global.foo(a)`. Mas isso acontecia mesmo para variáveis locais, e causava vários tipos de problemas. Com `strict mode` as invocações de função que não usam a sintaxe especial de chamada de método (`objeto.método(...)`) passam `undefined` como o parâmetro receptor.
